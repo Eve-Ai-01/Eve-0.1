@@ -1,6 +1,18 @@
 # Use a specific Node.js version for better reproducibility
 FROM node:23.3.0-slim AS builder
 
+# Add build arguments for environment variables
+ARG DISCORD_TOKEN
+ARG OPENAI_API_KEY
+ARG HEDERA_ACCOUNT_ID
+ARG HEDERA_PRIVATE_KEY
+
+# Set environment variables
+ENV DISCORD_TOKEN=$DISCORD_TOKEN
+ENV OPENAI_API_KEY=$OPENAI_API_KEY
+ENV HEDERA_ACCOUNT_ID=$HEDERA_ACCOUNT_ID
+ENV HEDERA_PRIVATE_KEY=$HEDERA_PRIVATE_KEY
+
 # Install pnpm globally and install necessary build tools
 RUN npm install -g pnpm@9.15.1 && \
     apt-get update && \

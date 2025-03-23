@@ -41,3 +41,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            HEDERA_ACCOUNT_ID=${{ secrets.HEDERA_ACCOUNT_ID }}
+            HEDERA_PRIVATE_KEY=${{ secrets.HEDERA_PRIVATE_KEY }}
