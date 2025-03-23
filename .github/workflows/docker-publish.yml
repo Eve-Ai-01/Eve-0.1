@@ -1,4 +1,4 @@
-name: Docker Build and Publish
+name: Docker Build and Push to Docker Hub and Hugging Face
 
 on:
   push:
@@ -7,9 +7,10 @@ on:
     branches: [ "master" ]
 
 env:
-  DOCKER_HUB_REPOSITORY: eveai/eve-ai # Updated with your Docker Hub username
+  DOCKER_HUB_REPOSITORY: eveai/eve-ai
   REGISTRY: docker.io
   IMAGE_NAME: ${{ github.repository }}
+  HF_SPACE_ID: roshikhan3021/eve-ai
 
 jobs:
   build-and-push:
@@ -46,3 +47,14 @@ jobs:
             OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
             HEDERA_ACCOUNT_ID=${{ secrets.HEDERA_ACCOUNT_ID }}
             HEDERA_PRIVATE_KEY=${{ secrets.HEDERA_PRIVATE_KEY }}
+
+      - name: Login to Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          docker login -u _token -p $HF_TOKEN registry.hf.space
+
+      - name: Tag and push to Hugging Face
+        run: |
+          docker tag ${{ env.DOCKER_HUB_REPOSITORY }}:latest registry.hf.space/${{ env.HF_SPACE_ID }}
+          docker push registry.hf.space/${{ env.HF_SPACE_ID }}
